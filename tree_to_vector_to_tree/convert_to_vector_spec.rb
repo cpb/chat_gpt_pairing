@@ -9,13 +9,14 @@ end
 
 def convert_to_vector(tree)
   vector = []
+  queue = [tree]
 
-  def convert_to_vector_helper(tree, vector)
-    vector << tree.value
-    tree.children.sort_by(&:value).each { |child| convert_to_vector_helper(child, vector) }
+  while !queue.empty?
+    current = queue.shift
+    vector << current.value
+    queue += current.children
   end
 
-  convert_to_vector_helper(tree, vector)
   vector
 end
 
