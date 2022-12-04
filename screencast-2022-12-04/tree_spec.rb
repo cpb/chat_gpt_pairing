@@ -1,35 +1,60 @@
 class Tree
   attr_accessor :root
 
-  # initialize an empty tree
   def initialize
     @root = nil
   end
 
-  # insert a value into the binary tree
   def insert(value)
-    # create a new TreeNode if the root is empty
-    if root.nil?
-      self.root = TreeNode.new(value)
+    if @root.nil?
+      @root = TreeNode.new(value)
     else
-      root.insert(value)
+      @root.insert(value)
     end
   end
 
-  # convert the binary tree into a vector
   def to_vector
-    return [] if root.nil?
+    vector = []
 
-    root.to_vector
+    # Perform a pre-order traversal to convert the tree to a vector
+    traverse_pre_order(@root, vector)
+
+    vector
   end
 
-  # initialize a tree from a vector
+  def traverse_pre_order(node, vector)
+    return if node.nil?
+
+    vector << node.value
+
+    # Traverse left subtree
+    traverse_pre_order(node.left, vector)
+    # Traverse right subtree
+    traverse_pre_order(node.right, vector)
+  end
+
   def self.from_vector(vector)
     tree = Tree.new
+    tree.root = TreeNode.new(vector[0])
+
     vector.each do |value|
       tree.insert(value)
     end
+
     tree
+  end
+
+  def depth
+    traverse_depth(@root, 0)
+  end
+
+  def traverse_depth(node, depth)
+    return depth if node.nil?
+
+    left_depth = traverse_depth(node.left, depth + 1)
+    right_depth = traverse_depth(node.right, depth + 1)
+
+    [left_depth, right_depth].max
   end
 end
 
