@@ -84,6 +84,14 @@ RSpec.describe Tree do
 
       expect(tree.to_vector).to eq(vector)
     end
+
+    it 'should initialize a tree with a depth of 3 from a vector' do
+      vector = [1,2,3,4,5,6,7]
+      tree = Tree.from_vector(vector)
+
+      expect(tree.depth).to eq(3)
+      expect(tree.to_vector).to eq(vector)
+    end
   end
 end
 
