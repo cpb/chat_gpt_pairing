@@ -17,7 +17,7 @@ def convert_to_tree(vector)
     if queue.empty?
       tree = current
     else
-      parent = queue.shift
+      parent = queue.last
       parent.children << current
     end
 
