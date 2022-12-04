@@ -12,7 +12,7 @@ def convert_to_vector(tree)
 
   def convert_to_vector_helper(tree, vector)
     vector << tree.value
-    tree.children.each { |child| convert_to_vector_helper(child, vector) }
+    tree.children.sort_by(&:value).each { |child| convert_to_vector_helper(child, vector) }
   end
 
   convert_to_vector_helper(tree, vector)
