@@ -17,7 +17,7 @@ def convert_to_tree(vector)
     if queue.empty?
       tree = current
     else
-      parent = queue.last
+      parent = queue.shift
       parent.children << current
     end
 
@@ -26,6 +26,7 @@ def convert_to_tree(vector)
 
   tree
 end
+
 
 describe 'convert_to_tree' do
   let(:tree) { Tree.new(1, [Tree.new(2, [Tree.new(4)]), Tree.new(3)]) }
