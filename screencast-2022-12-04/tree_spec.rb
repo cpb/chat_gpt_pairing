@@ -6,10 +6,26 @@ class Tree
   end
 
   def self.from_vector(vector)
+    # Create a new tree and initialize an empty queue
     tree = Tree.new
+    queue = []
+
+    # Iterate over the elements in the vector
     vector.each do |value|
-      tree.insert(value)
+      if tree.root.nil?
+        # If the tree does not have a root, create one with the current value
+        tree.root = TreeNode.new(value)
+      else
+        # Otherwise, take the next node from the queue and add a child to it
+        node = queue.shift
+        node.children << TreeNode.new(value)
+      end
+
+      # Add the root of the tree to the queue
+      queue << tree.root
     end
+
+    # Return the tree
     tree
   end
 
@@ -63,7 +79,6 @@ class TreeNode
     @children << TreeNode.new(value)
   end
 end
-
 
 RSpec.describe Tree do
   describe '#to_vector' do
