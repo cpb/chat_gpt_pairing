@@ -1,5 +1,5 @@
 class Tree
-  attr_reader :root
+  attr_accessor :root
 
   def initialize
     @root = nil
@@ -60,7 +60,7 @@ class Tree
 
   def traverse(node, depth, max_depth)
     return if node.nil?
-    max_depth[0] = depth if depth > max_depth[0]
+    max_depth[0] = depth if depth
     node.children.each do |child|
       traverse(child, depth + 1, max_depth)
     end
