@@ -30,35 +30,22 @@ class Tree
   def traverse(node, vector)
     return if node.nil?
     vector << node.value
-    traverse(node.left, vector)
-    traverse(node.right, vector)
+    node.children.each do |child|
+      traverse(child, vector)
+    end
   end
 end
 
 class TreeNode
-  attr_reader :value
-  attr_accessor :left, :right
+  attr_reader :value, :children
 
   def initialize(value)
     @value = value
-    @left = nil
-    @right = nil
+    @children = []
   end
 
   def insert(value)
-    if value <= @value
-      if @left.nil?
-        @left = TreeNode.new(value)
-      else
-        @left.insert(value)
-      end
-    else
-      if @right.nil?
-        @right = TreeNode.new(value)
-      else
-        @right.insert(value)
-      end
-    end
+    @children << TreeNode.new(value)
   end
 end
 
