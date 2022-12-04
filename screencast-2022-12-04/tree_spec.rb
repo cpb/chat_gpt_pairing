@@ -33,6 +33,22 @@ class Tree
     end
     vector
   end
+
+  def depth
+    max_depth = 0
+    traverse(@root, 0, max_depth)
+    max_depth
+  end
+
+  private
+
+  def traverse(node, depth, max_depth)
+    return if node.nil?
+    max_depth = depth if depth > max_depth
+    node.children.each do |child|
+      traverse(child, depth + 1, max_depth)
+    end
+  end
 end
 
 class TreeNode
