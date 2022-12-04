@@ -23,18 +23,15 @@ class Tree
 
   def to_vector
     vector = []
-    traverse(@root, vector)
-    vector
-  end
-
-  private
-
-  def traverse(node, vector)
-    return if node.nil?
-    vector << node.value
-    node.children.each do |child|
-      traverse(child, vector)
+    queue = [@root]
+    until queue.empty?
+      node = queue.shift
+      vector << node.value
+      node.children.each do |child|
+        queue << child
+      end
     end
+    vector
   end
 end
 
