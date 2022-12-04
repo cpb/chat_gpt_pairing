@@ -59,6 +59,23 @@ RSpec.describe Tree do
 
       expect(tree.to_vector).to eq([1,2,3])
     end
+
+    it 'should convert a three-level tree into a vector' do
+      tree = Tree.new
+      tree.insert(1)
+      tree.insert(2)
+      tree.insert(3)
+
+      parent_node = tree.root.children.first
+      parent_node.insert(4)
+      parent_node.insert(5)
+
+      grandparent_node = parent_node.children.first
+      grandparent_node.insert(6)
+      grandparent_node.insert(7)
+
+      expect(tree.to_vector).to eq([1,2,3,4,5,6,7])
+    end
   end
 
   describe '#from_vector' do
