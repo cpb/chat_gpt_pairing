@@ -35,16 +35,16 @@ class Tree
   end
 
   def depth
-    max_depth = 0
+    max_depth = [0]
     traverse(@root, 0, max_depth)
-    max_depth
+    max_depth[0]
   end
 
   private
 
   def traverse(node, depth, max_depth)
     return if node.nil?
-    max_depth = depth if depth > max_depth
+    max_depth[0] = depth if depth > max_depth[0]
     node.children.each do |child|
       traverse(child, depth + 1, max_depth)
     end
@@ -63,6 +63,7 @@ class TreeNode
     @children << TreeNode.new(value)
   end
 end
+
 
 RSpec.describe Tree do
   describe '#to_vector' do
