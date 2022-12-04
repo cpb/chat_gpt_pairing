@@ -3,6 +3,14 @@ class Tree
     @root = nil
   end
 
+  def self.from_vector(vector)
+    tree = Tree.new
+    vector.each do |value|
+      tree.insert(value)
+    end
+    tree
+  end
+
   def insert(value)
     if @root.nil?
       @root = TreeNode.new(value)
