@@ -65,4 +65,14 @@ RSpec.describe Tree do
       expect(tree.to_vector).to eq([1,2,3])
     end
   end
+
+  describe '#from_vector' do
+    it 'should initialize a tree from the vector' do
+      vector = [1,2,3]
+      tree = Tree.from_vector(vector)
+
+      expect(tree.to_vector).to eq(vector)
+    end
+  end
 end
+
