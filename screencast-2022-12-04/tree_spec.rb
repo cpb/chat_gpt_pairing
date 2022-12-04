@@ -1,82 +1,61 @@
 class Tree
   attr_accessor :root
 
+  # initialize an empty tree
   def initialize
     @root = nil
   end
 
-  def self.from_vector(vector)
-    # Create a new tree and initialize an empty queue
-    tree = Tree.new
-    queue = []
-
-    # Iterate over the elements in the vector
-    vector.each do |value|
-      if tree.root.nil?
-        # If the tree does not have a root, create one with the current value
-        tree.root = TreeNode.new(value)
-      else
-        # Otherwise, take the next node from the queue and add a child to it
-        node = queue.shift
-        node.children << TreeNode.new(value)
-      end
-
-      # Add the root of the tree to the queue
-      queue << tree.root
-    end
-
-    # Return the tree
-    tree
-  end
-
+  # insert a value into the binary tree
   def insert(value)
-    if @root.nil?
-      @root = TreeNode.new(value)
+    # create a new TreeNode if the root is empty
+    if root.nil?
+      self.root = TreeNode.new(value)
     else
-      @root.insert(value)
+      root.insert(value)
     end
   end
 
+  # convert the binary tree into a vector
   def to_vector
-    vector = []
-    queue = [@root]
-    until queue.empty?
-      node = queue.shift
-      vector << node.value
-      node.children.each do |child|
-        queue << child
-      end
-    end
-    vector
+    return [] if root.nil?
+
+    root.to_vector
   end
 
-  def depth
-    max_depth = [0]
-    traverse(@root, 0, max_depth)
-    max_depth[0]
-  end
-
-  private
-
-  def traverse(node, depth, max_depth)
-    return if node.nil?
-    max_depth[0] = depth if depth
-    node.children.each do |child|
-      traverse(child, depth + 1, max_depth)
+  # initialize a tree from a vector
+  def self.from_vector(vector)
+    tree = Tree.new
+    vector.each do |value|
+      tree.insert(value)
     end
+    tree
   end
 end
 
 class TreeNode
-  attr_reader :value, :children
+  attr_accessor :value, :children
 
+  # initialize a new TreeNode
   def initialize(value)
     @value = value
     @children = []
   end
 
+  # insert a value into the binary tree
   def insert(value)
-    @children << TreeNode.new(value)
+    # if the value is less than or equal to this node's value
+    # then insert it into the left subtree
+    children << TreeNode.new(value)
+  end
+
+  # convert the subtree rooted at this node into a vector
+  def to_vector
+    vector = [value]
+    children.each do |child|
+      vector.concat(child.to_vector)
+    end
+    vector
   end
 end
 
