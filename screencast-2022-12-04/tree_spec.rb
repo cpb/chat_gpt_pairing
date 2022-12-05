@@ -1,86 +1,54 @@
 class Tree
-  attr_accessor :root
+  attr_accessor :root, :depth
 
-  def initialize
-    @root = nil
-  end
-
-  def insert(value)
-    if @root.nil?
-      @root = TreeNode.new(value)
-    else
-      @root.insert(value)
-    end
+  def initialize(root)
+    @root = root
+    @depth = 0
   end
 
   def to_vector
     vector = []
-
-    # Perform a pre-order traversal to convert the tree to a vector
     traverse_pre_order(@root, vector)
-
     vector
   end
 
-  def traverse_pre_order(node, vector)
-    return if node.nil?
-
-    vector << node.value
-
-    # Traverse left subtree
-    traverse_pre_order(node.left, vector)
-    # Traverse right subtree
-    traverse_pre_order(node.right, vector)
-  end
-
-  def self.from_vector(vector)
-    tree = Tree.new
-    tree.root = TreeNode.new(vector[0])
-
-    vector.each do |value|
-      tree.insert(value)
-    end
-
-    tree
+  def from_vector(vector)
+    traverse_pre_order(vector, self)
   end
 
   def depth
     traverse_depth(@root, 0)
   end
 
+  private
+
+  def traverse_pre_order(node, vector)
+    vector << node.value
+    node.children.each do |child|
+      traverse_pre_order(child, vector)
+    end
+  end
+
   def traverse_depth(node, depth)
-    return depth if node.nil?
-
-    left_depth = traverse_depth(node.left, depth + 1)
-    right_depth = traverse_depth(node.right, depth + 1)
-
-    [left_depth, right_depth].max
+    left_depth = traverse_depth(node.children[0], depth + 1) if node.children[0]
+    right_depth = traverse_depth(node.children[1], depth + 1) if node.children[1]
+    left_depth ||= 0
+    right_depth ||= 0
+    @depth = [left_depth, right_depth, depth].max
+    @depth
   end
 end
 
 class TreeNode
   attr_accessor :value, :children
 
-  # initialize a new TreeNode
   def initialize(value)
     @value = value
     @children = []
   end
 
-  # insert a value into the binary tree
-  def insert(value)
-    # if the value is less than or equal to this node's value
-    # then insert it into the left subtree
-    children << TreeNode.new(value)
-  end
-
-  # convert the subtree rooted at this node into a vector
-  def to_vector
-    vector = [value]
-    children.each do |child|
-      vector.concat(child.to_vector)
-    end
-    vector
+  def add_child(node)
+    @children << node
   end
 end
 
