@@ -1,7 +1,5 @@
 class Tree
-  attr_accessor :root, :depth
-
-  def initialize(root)
+  def initialize(root = TreeNode.new)
     @root = root
     @depth = 0
   end
@@ -12,23 +10,40 @@ class Tree
     vector
   end
 
-  def from_vector(vector)
-    @root = TreeNode.new(vector.shift)
-    traverse_pre_order_insert(@root, vector)
-  end
-
-  private
-
   def traverse_pre_order(node, vector)
-    return if node.nil?
     vector << node.value
-    traverse_pre_order_insert(node.children, vector)
+    vector << node.children.size
+    node.children.each do |child|
+      traverse_pre_order(child, vector)
+    end
   end
 
-  def traverse_pre_order_insert(node, vector)
-    return if vector.empty?
-    node.children << TreeNode.new(vector.shift)
-    traverse_pre_order_insert(node.children.last, vector)
+  def depth
+    traverse_depth(@root, 0)
+  end
+
+  def traverse_depth(node, depth)
+    max_depth = depth
+    node.children.each do |child|
+      child_depth = traverse_depth(child, depth + 1)
+      max_depth = [max_depth, child_depth].max
+    end
+    max_depth
+  end
+
+  def self.from_vector(vector)
+    root = TreeNode.new(vector.shift)
+    traverse_pre_order_build(root, vector)
+    Tree.new(root)
+  end
+
+  def self.traverse_pre_order_build(node, vector)
+    num_children = vector.shift
+    num_children.times do
+      child = TreeNode.new(vector.shift)
+      node.add_child(child)
+      traverse_pre_order_build(child, vector)
+    end
   end
 end
 
