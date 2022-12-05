@@ -13,29 +13,22 @@ class Tree
   end
 
   def from_vector(vector)
-    traverse_pre_order(vector, self)
-  end
-
-  def depth
-    traverse_depth(@root, 0)
+    @root = TreeNode.new(vector.shift)
+    traverse_pre_order_insert(@root, vector)
   end
 
   private
 
   def traverse_pre_order(node, vector)
+    return if node.nil?
     vector << node.value
-    node.children.each do |child|
-      traverse_pre_order(child, vector)
-    end
+    traverse_pre_order_insert(node.children, vector)
   end
 
-  def traverse_depth(node, depth)
-    left_depth = traverse_depth(node.children[0], depth + 1) if node.children[0]
-    right_depth = traverse_depth(node.children[1], depth + 1) if node.children[1]
-    left_depth ||= 0
-    right_depth ||= 0
-    @depth = [left_depth, right_depth, depth].max
-    @depth
+  def traverse_pre_order_insert(node, vector)
+    return if vector.empty?
+    node.children << TreeNode.new(vector.shift)
+    traverse_pre_order_insert(node.children.last, vector)
   end
 end
 
